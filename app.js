@@ -7,7 +7,7 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 // const csrf = require('csurf');
 const cors = require("cors");
-// const flash = require("connect-flash");
+const flash = require("connect-flash");
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
@@ -38,7 +38,7 @@ app.use(
   })
 );
 // app.use(csrfProtection);
-// app.use(flash());
+app.use(flash());
 
 app.use((req, res, next) => {
   console.log("req :",req)
@@ -74,5 +74,5 @@ mongoose
     app.listen(9000);
   })
   .catch((err) => {
-    console.log(err);
+    console.log("errr",err);
   });
