@@ -3,12 +3,13 @@ const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const API_KEY = require("../mongoUrl")
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
       api_key:
-        "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"
+      API_KEY
     }
   })
 );

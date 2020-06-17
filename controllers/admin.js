@@ -9,7 +9,7 @@ const Product = require("../models/product");
 // };
 
 exports.postAddProduct = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const title = req.body.name;
   const imageUrl = req.body.image;
   const price = req.body.price;
@@ -21,16 +21,17 @@ exports.postAddProduct = (req, res, next) => {
     imageUrl: imageUrl,
     userId: req.user
   });
-  product
-    .save()
-    .then(result => {
-      console.log("Created Product");
-      res.send("Product added");
-      // res.redirect("/admin/products");
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  console.log("req.user :",req.user)
+  // product
+  //   .save()
+  //   .then(result => {
+  //     console.log("Created Product");
+  //     res.send("Product added");
+  //     // res.redirect("/admin/products");
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   });
 };
 
 exports.getEditProduct = (req, res, next) => {

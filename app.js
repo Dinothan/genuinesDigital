@@ -7,11 +7,11 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 // const csrf = require('csurf');
 const cors = require("cors");
-const flash = require("connect-flash");
+// const flash = require("connect-flash");
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
-const { MONGODB_URI } = require("./mongoUrl");
+const MONGODB_URI = require("./mongoUrl");
 
 const app = express();
 const store = new MongoDBStore({
@@ -38,15 +38,19 @@ app.use(
   })
 );
 // app.use(csrfProtection);
-app.use(flash());
+// app.use(flash());
 
 app.use((req, res, next) => {
+  console.log("req :",req)
   if (!req.session.user) {
+    console.log("user no :")
     return next();
   }
+  console.log("user1 :",req.session.user)
   User.findById(req.session.user._id)
     .then((user) => {
       req.user = user;
+      console.log("user :",user)
       next();
     })
     .catch((err) => console.log(err));
