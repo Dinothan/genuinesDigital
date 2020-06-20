@@ -14,43 +14,10 @@ const transporter = nodemailer.createTransport(
   })
 );
 
-// exports.getLogin = (req, res, next) => {
-//   let message = req.flash("error");
-
-//   if (message.length > 0) {
-//     message = message[0];
-//   } else {
-//     message = null;
-//   }
-//   res.send(req);
-//   // res.render("auth/login", {
-//   //   path: "/login",
-//   //   pageTitle: "Login",
-//   //   isAuthenticated: false,
-//   //   errorMessage: message
-//   // });
-// };
-
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  //send user info
-  //   jwt.verify(req.token, "secretkey", (err, authData) => {
-  //     if (err) {
-  //       res.sendStatus(403);
-  //     } else {
-  //       res.json({
-  //         message: "Post created...",
-  //         authData
-  //       });
-  //     }
-  //   });
-  // //send jwt
-  //   jwt.sign({user}, 'secretkey', { expiresIn: '30s' }, (err, token) => {
-  //     res.json({
-  //       token
-  //     });
-  //   });
+
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
@@ -65,7 +32,7 @@ exports.postLogin = (req, res, next) => {
             jwt.sign(
               { user },
               "secretkey",
-              // { expiresIn: "30s" },
+              { expiresIn: "1d" },
               (err, token) => {
                 res.json({
                   token,
@@ -78,23 +45,7 @@ exports.postLogin = (req, res, next) => {
                 });
               }
             );
-
-            // console.log(err);
-            // res.send(req.session.user);
-            // jwt.sign(
-            //   { user },
-            //   "secretkey",
-            //   // { expiresIn: "30s" },
-            //   (err, token) => {
-            //     res.json({
-            //       token
-            //     });
-            //   }
-            // );
-            // });
           }
-          // req.flash("error", "Invalid email or password.");
-          // res.redirect("/login");
         })
         .catch((err) => {
           console.log(err);
@@ -146,14 +97,14 @@ exports.postSignup = (req, res, next) => {
         })
         .then((result) => {
           console.log("result :", result);
-          return res.send("successfully created");
+          res.send("successfully created");
           // res.redirect("/login");
-          // return transporter.sendMail({
-          //   to: email,
-          //   from: "dinothan1@gmail.com",
-          //   subject: "Signup succeeded!",
-          //   html: "<h1>You successfully signed up!</h1>"
-          // });
+          return transporter.sendMail({
+            to: email,
+            from: "dinothan1@gmail.com",
+            subject: "Signup succeeded!",
+            html: "<h1>You successfully signed up!</h1>",
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -165,40 +116,15 @@ exports.postSignup = (req, res, next) => {
 };
 
 exports.postLogout = (req, res, next) => {
-  // req.session.destroy(err => {
-  //   console.log("destroy :",err);
-  //   req.token = null;
-  //   res.send();
-  //   // res.redirect('/');
-  // });
-  // req.session.destroy(err => {
-  //   if (err) {
-  //     console.log("err :", err);
-  //   } else {
   jwt.verify(req.token, "secretkey", (err, authData) => {
-    // if (err) {
-    //   res.sendStatus(403);
-    // } else {
     let token = req.token;
     Session.deleteOne({ "session.token": token })
       .then((response) => {
         req.token = null;
         res.send();
-        // if(res.session.token === token){
-        // res.session.destory()
+
         console.log("res.session :", response);
-        // }else{
-        // console.log("no session")
-        // }
       })
       .catch((err) => console.log("err :", err));
-    // req.session.destroy();
-    // req.token = null;
-    // res.send();
-    // }
   });
-  // }
-
-  // res.redirect("/");
-  // });
 };

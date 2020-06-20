@@ -13,6 +13,7 @@ exports.postAddProduct = (req, res, next) => {
   Session.findOne({ "session.token": token })
     .then((response) => {
       const title = req.body.name;
+      // const imageUrl = Buffer.from(req.body.image, 'base64');
       const imageUrl = req.body.image;
       const price = req.body.price;
       const description = req.body.description;
