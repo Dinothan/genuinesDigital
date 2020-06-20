@@ -4,7 +4,7 @@ const sendgridTransport = require("nodemailer-sendgrid-transport");
 const User = require("../models/user");
 const Session = require("../models/sessions");
 const jwt = require("jsonwebtoken");
-const API_KEY = require("../apikey");
+const API_KEY = require("../apiKey");
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
